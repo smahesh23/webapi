@@ -13,6 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MovieContext>(options => options.UseInMemoryDatabase("MoviesDb"));
 builder.Services.AddDbContext<ContactContext>(options => options.UseInMemoryDatabase("ContactsDb"));
 
+builder.Services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesApiConnectionString")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,7 +25,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 app.UseAuthorization();
 
 app.MapControllers();
