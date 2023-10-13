@@ -60,7 +60,6 @@ namespace WebApi.Controllers
             }
             return NotFound();
         }
-
         [HttpDelete]
         [Route("{id:int}")]
         public IActionResult DeleteEmployee([FromRoute]int id)

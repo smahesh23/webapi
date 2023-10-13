@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MovieContext>(options => options.UseInMemoryDatabase("MoviesDb"));
 builder.Services.AddDbContext<ContactContext>(options => options.UseInMemoryDatabase("ContactsDb"));
 
-builder.Services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesApiConnectionString")));
+builder.Services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesApiConnectionStringSSMS")));
 
 var app = builder.Build();
 
