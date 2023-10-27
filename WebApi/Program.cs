@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApi.Data;
+using WebApi.Models;
+using WebApi.Repository;
 using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,11 +22,13 @@ builder.Services.AddDbContext<ContactContext>(options => options.UseInMemoryData
 builder.Services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesApiConnectionStringSSMS")));
 builder.Services.AddDbContext<UserAuthContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesApiConnectionStringSSMS")));
 
+builder.Services.AddScoped<IEmployeeRepository<Employee>, EmployeeRepository>();
+
 
 //Identity Configureations
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     {
-        options.Password.RequiredLength=8;
+        options.Password.RequiredLength=5;
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;
         options.Password.RequireNonAlphanumeric = false;
