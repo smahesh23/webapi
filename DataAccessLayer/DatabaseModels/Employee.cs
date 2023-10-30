@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using WebApi.Data;
 
-namespace WebApi.Models
+namespace DataAccessLayer.DatabaseModels
 {
-    public class Employee:IEntity
+    public class Employee 
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity),Key()]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
         public int Id { get; set; }
-        
+
         public string? Name { get; set; }
         public string? Phone { get; set; }
         public string? Company { get; set; }

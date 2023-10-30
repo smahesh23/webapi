@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Data;
+using DataAccessLayer.DatabaseContexts;
 
 #nullable disable
 
 namespace WebApi.Migrations
 {
-    [DbContext(typeof(EmployeeContext))]
+    [DbContext(typeof(EmployeeDbContext))]
     [Migration("20231012045133_SSMS")]
     partial class SSMS
     {

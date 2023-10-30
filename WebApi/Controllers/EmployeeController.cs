@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BusinessAccessLayer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Data;
 using WebApi.Models;
-using WebApi.Repository;
+using DataAccessLayer.DatabaseModels;
+
 
 namespace WebApi.Controllers
 {
@@ -11,22 +12,17 @@ namespace WebApi.Controllers
     [Route("api/employees")]
     public class EmployeeController : Controller
     {
-        //var response = new { message = "Not Found" };
-        private readonly IEmployeeRepository<Employee> employeeRepository;
-        public EmployeeController(EmployeeContext employeeContext, IEmployeeRepository<Employee> employeeRepository)
+        
+        private readonly IEmployeeService<Employee> _employeeService;
+        public EmployeeController(IEmployeeService<Employee> employeeService)
         {
-            this.employeeRepository = employeeRepository;
+            this._employeeService = employeeService;
         }
-        //[HttpGet]
-        //public IActionResult GetEmployees()
-        //{
-        //    return Ok(_employeeContext.Employees);
-        //}
         [HttpGet]
         [Route("{id:int}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var employee = await employeeRepository.Get(id);
+            var employee = await _employeeService.Get(id);
             if (employee != null)
             {
                 return Ok(employee);
@@ -44,7 +40,7 @@ namespace WebApi.Controllers
                 Role = addEmployee.Role,
                 City = addEmployee.City
             };
-            employeeRepository.Add(employee);
+            _employeeService.Add(employee);
             return Ok(employee);
         }
 
@@ -53,7 +49,8 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
         {
-            var result = await employeeRepository.GetAll();
+            Console.WriteLine("From Microservices");
+            var result = await _employeeService.GetAll();
             if(result!=null) return Ok(result);
             var response = new { message = "Not Data found" };
             return NotFound();
@@ -63,7 +60,7 @@ namespace WebApi.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute]int id,Employee employee)
         {            
-            var result = await employeeRepository.Update(id, employee);
+            var result = await _employeeService.Update(id, employee);
             if (result != null) return Ok(result);
             return BadRequest();
 
@@ -72,7 +69,7 @@ namespace WebApi.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var result = await employeeRepository.Delete(id);
+            var result = await _employeeService.Delete(id);
             if (result != null) return Ok(result);
             var response = new { message = "Not Found" };
             return NotFound(response);

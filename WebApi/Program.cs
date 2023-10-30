@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApi.Data;
-using WebApi.Models;
-using WebApi.Repository;
+using DataAccessLayer.DatabaseModels;
 using WebApi.Services;
+using DataAccessLayer.DatabaseContexts;
+using DataAccessLayer.Repository;
+using BusinessAccessLayer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,11 +20,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //DB Contexts Configurations
-builder.Services.AddDbContext<ContactContext>(options => options.UseInMemoryDatabase("ContactsDb"));
-builder.Services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesApiConnectionStringSSMS")));
+//builder.Services.AddDbContext<ContactContext>(options => options.UseInMemoryDatabase("ContactsDb"));
+builder.Services.AddDbContext<EmployeeDbContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesApiConnectionStringSSMS"),b=>b.MigrationsAssembly("DataAccessLayer")));
 builder.Services.AddDbContext<UserAuthContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeesApiConnectionStringSSMS")));
 
+
 builder.Services.AddScoped<IEmployeeRepository<Employee>, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeService<Employee>, EmployeeService>();
+
+
 
 
 //Identity Configureations
